@@ -39,6 +39,7 @@ class Code
   def save_as filename,verbose=false,sep="\n"
     str=self.finalize
     str.gsub!(/[,;]\s*\)/,')')
+    #puts str
     File.open(filename,'w'){|f| f.puts(str)}
     puts "=> code saved as : #{filename}" if verbose
     return filename
