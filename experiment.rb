@@ -95,6 +95,15 @@ module Proto
     end
   end
 
+  class Xor2 < Circuit
+    def initialize name
+      super(name)
+      self << Input.new("i0")
+      self << Input.new("i1")
+      self << Output.new("o1")
+    end
+  end
+
   class Inv < Circuit
     def initialize name
       super(name)
@@ -111,7 +120,7 @@ module Proto
     end
   end
 
-  GTECH=[And2,And3,Or2,Inv,Dff]
+  GTECH=[And2,And3,Or2,Inv,Dff,Xor2]
 
   class RandomCircuitGenerator
     def generate params
@@ -278,7 +287,7 @@ module Proto
         code.newline
         code << "entity #{circuit_name} is"
         code.indent=2
-        code << "generic(delay : time := 1 ns);"
+        code << "generic(delay : time := #{(1+rand(2)).to_f/10} ns);"
         code << "port("
         code.indent=4
         if circuit_instance.is_a?(Dff)
@@ -541,9 +550,9 @@ if $PROGRAM_NAME==__FILE__
     name: "test",
     ninputs: 5,
     noutputs:4,
-    ncomponents: 50,
+    ncomponents: 100,
     max_fanout: 3,
-    depth: 10,
+    depth: 30,
     nstimuli: 100
   }
 
